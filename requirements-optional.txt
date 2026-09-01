@@ -1,0 +1,29 @@
+# OPTIONAL upgrades. Not needed for `make demo`, `make eval` or `make test`, and
+# NOT installed by default — every one of these downloads model weights on first
+# use, which would break INV-5 (offline run on a clean clone).
+#
+# Each swaps a transformer model in behind an env flag. The decision logic and
+# the scheduling are identical either way; only detector quality changes. Which
+# backend ran is recorded in results.json under `run.backends`, so no number is
+# ever ambiguous about what produced it.
+#
+#   pip install -r requirements-optional.txt
+#
+#   SLIPSTREAM_EMBED_BACKEND=st       sentence-transformers/all-MiniLM-L6-v2  (~90 MB)
+#   SLIPSTREAM_NLI_BACKEND=nli        cross-encoder/nli-deberta-v3-small      (~280 MB)
+#   SLIPSTREAM_TOXICITY_BACKEND=bert  unitary/toxic-bert                      (~420 MB)
+#   SLIPSTREAM_USE_PRESIDIO=1         presidio-analyzer + spaCy en_core_web_sm (~50 MB)
+#
+# Total first-run download if you enable everything: roughly 840 MB.
+
+sentence-transformers>=5.0,<6
+transformers>=5.0,<6
+torch>=2.4
+
+presidio-analyzer>=2.2
+spacy>=3.7,<4
+# and: python -m spacy download en_core_web_sm
+
+# Fourth evaluation arm. If this does not install cleanly on CPU the harness
+# skips the arm and says so in the report rather than faking it (§10).
+# nemoguardrails>=0.11

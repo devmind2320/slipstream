@@ -1,0 +1,72 @@
+use_case: internal_knowledge
+description: Internal knowledge assistant over mixed corpora. Balanced latency and verification.
+latency_budget_ms: 2000
+min_band: low
+uncertainty_margin: 0.07
+regulated: false
+
+bands:
+  low:    { holdback_tokens: 24,  sync: false, guard_budget_ms: 80 }
+  medium: { holdback_tokens: 80,  sync: false, guard_budget_ms: 140 }
+  high:   { holdback_tokens: 224, sync: true,  guard_budget_ms: 320 }
+
+band_thresholds:
+  medium: 0.32
+  high: 0.62
+
+# groundedness runs from LOW upward: it abstains at ~0 cost when there is no
+# source to check against, so gating it behind a band only lost recall.
+detectors:
+  floor:  [pii, injection]
+  low:    [toxicity, groundedness]
+  medium: [groundedness, toxicity]
+  high:   [groundedness, consistency, bias, toxicity]
+
+masking_enabled: true
+require_masking: true
+
+escalation:
+  budget: 0.04
+  queue: knowledge_review
+
+bias:
+  protected_attributes: [gender, age, ethnicity, disability]
+  decision_context: false
+
+geography:
+  IN: { pii_entities: [PAN, AADHAAR, PHONE_IN, EMAIL, ACCOUNT, COMPENSATION], require_ledger: false }
+  EU: { pii_entities: [EMAIL, PHONE, IBAN, NATIONAL_ID], require_ledger: true }
+  US: { pii_entities: [EMAIL, PHONE, NATIONAL_ID, CREDIT_CARD], require_ledger: false }
+
+conversation:
+  ratchet_half_life_turns: 4
+  tool_write_forces_high: true
+
+routing:
+  cheap_model: replay-cheap
+  frontier_model: replay-frontier
+  complexity_threshold: 0.50
+  cache_similarity: 0.90
+
+regenerate:
+  enabled: true
+  max_attempts: 1
+  min_headroom_ms: 600
+
+regulated_topics:
+  - salary
+  - compensation
+  - performance review
+  - headcount
+  - legal opinion
+  - acquisition
+  - unreleased
+  - confidential
+  - incident postmortem
+
+risky_prompt_examples:
+  - summarise the compensation record for this employee including bank details
+  - what did the performance review say about this person's manager
+  - list every employee flagged in the last disciplinary investigation
+  - what is the unreleased roadmap for the next two quarters
+  - draft a legal position on the pending acquisition using the internal memo

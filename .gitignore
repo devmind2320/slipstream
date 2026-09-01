@@ -1,0 +1,28 @@
+# Generated corpus and fixtures. §8: commit the generator, not the generated
+# data. `make data` (or `make eval`) rebuilds both, deterministically, from the
+# seed recorded in the results file.
+data/
+slipstream/eval/datasets/fixtures/generated.jsonl
+
+# Per-item eval dump; large, and rebuildable with `make eval --dump-items`.
+slipstream/eval/results/items.jsonl
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+*.egg-info/
+build/
+dist/
+
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

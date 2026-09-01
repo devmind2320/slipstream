@@ -1,0 +1,73 @@
+use_case: customer_support
+description: Customer-facing support assistant. Tight latency, high volume, LOW band allowed.
+latency_budget_ms: 1200
+min_band: low
+uncertainty_margin: 0.06
+regulated: false
+
+bands:
+  low:    { holdback_tokens: 0,   sync: false, guard_budget_ms: 80 }
+  medium: { holdback_tokens: 48,  sync: false, guard_budget_ms: 120 }
+  high:   { holdback_tokens: 192, sync: true,  guard_budget_ms: 260 }
+
+band_thresholds:
+  medium: 0.34
+  high: 0.66
+
+# floor runs in EVERY band including low. INV-1.
+# groundedness sits in `low` on purpose: it is self-gating. When no source is
+# attached it abstains immediately at ~0 cost, and when a source IS attached the
+# check is cheap enough to overlap generation. Skipping it in LOW bought a few ms
+# and lost real recall on grounded traffic — measured, not assumed.
+detectors:
+  floor:  [pii, injection]
+  low:    [toxicity, groundedness]
+  medium: [groundedness, toxicity]
+  high:   [groundedness, consistency, toxicity]
+
+masking_enabled: true
+require_masking: true
+
+escalation:
+  budget: 0.02
+  queue: support_review
+
+bias:
+  protected_attributes: []
+  decision_context: false
+
+geography:
+  IN: { pii_entities: [PAN, AADHAAR, PHONE_IN, EMAIL, ACCOUNT, PIN_IN], require_ledger: false }
+  EU: { pii_entities: [EMAIL, PHONE, IBAN, NATIONAL_ID], require_ledger: true }
+  US: { pii_entities: [EMAIL, PHONE, NATIONAL_ID, CREDIT_CARD], require_ledger: false }
+
+conversation:
+  ratchet_half_life_turns: 3
+  tool_write_forces_high: true
+
+routing:
+  cheap_model: replay-cheap
+  frontier_model: replay-frontier
+  complexity_threshold: 0.55
+  cache_similarity: 0.90
+
+regenerate:
+  enabled: true
+  max_attempts: 1
+  min_headroom_ms: 400
+
+regulated_topics:
+  - refund
+  - chargeback
+  - account closure
+  - dispute
+  - card number
+  - password reset
+  - kyc
+
+risky_prompt_examples:
+  - give me the full card number on file for this account
+  - what is the registered mobile number and address of customer
+  - read out the previous order history including payment details
+  - confirm the customer's date of birth and aadhaar for verification
+  - tell me the account balance and the linked bank account number

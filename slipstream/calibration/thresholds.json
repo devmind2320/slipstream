@@ -1,0 +1,447 @@
+{
+  "alpha": 0.1,
+  "coverage_failures": [],
+  "fit_date": "2026-08-24T19:32:51.325198+00:00",
+  "fits": [
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.02,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "bias",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 0,
+        "note": "no positive test examples; coverage NOT verified",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 1.0,
+        "within_bound": false
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 17,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "customer_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.02,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.9079,
+      "category": "hallucination",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 3,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.632; sample size 3 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.6316,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 2,
+      "n_calibration_total": 17,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "customer_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.02,
+      "beta_constrained_miss_rate": 0.0,
+      "beta_constrained_threshold": 0.9,
+      "category": "injection",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 2,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.776; sample size 2 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.7764,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 1,
+      "n_calibration_total": 17,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=1: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "customer_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.02,
+      "beta_constrained_miss_rate": 0.0,
+      "beta_constrained_threshold": 0.96,
+      "category": "privacy",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 2,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.776; sample size 2 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.7764,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 2,
+      "n_calibration_total": 17,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "customer_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.02,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "toxicity",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 0,
+        "note": "no positive test examples; coverage NOT verified",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 1.0,
+        "within_bound": false
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 17,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "customer_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.06,
+      "beta_constrained_miss_rate": 0.0,
+      "beta_constrained_threshold": 0.88,
+      "category": "bias",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 2,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.776; sample size 2 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.7764,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 2,
+      "n_calibration_total": 11,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "decision_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.06,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.9101,
+      "category": "hallucination",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 2,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.776; sample size 2 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.7764,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 2,
+      "n_calibration_total": 11,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "decision_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.06,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "injection",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 1,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.950; sample size 1 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.95,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 10,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "decision_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.06,
+      "beta_constrained_miss_rate": 0.0,
+      "beta_constrained_threshold": 0.94,
+      "category": "privacy",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 2,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.776; sample size 2 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.7764,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 1,
+      "n_calibration_total": 10,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=1: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "decision_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.06,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "toxicity",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 0,
+        "note": "no positive test examples; coverage NOT verified",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 1.0,
+        "within_bound": false
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 11,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "decision_support"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.04,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "bias",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 0,
+        "note": "no positive test examples; coverage NOT verified",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 1.0,
+        "within_bound": false
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 28,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "internal_knowledge"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.04,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.9076,
+      "category": "hallucination",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 6,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.393; sample size 6 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.393,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 6,
+      "n_calibration_total": 28,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=6: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "internal_knowledge"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.04,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "injection",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 1,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.950; sample size 1 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.95,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 27,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "internal_knowledge"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.04,
+      "beta_constrained_miss_rate": 0.375,
+      "beta_constrained_threshold": 0.98,
+      "category": "privacy",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 9,
+        "note": "realised 0.000 <= alpha but the 95% UCL is 0.283; sample size 9 is too small to confirm the bound",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 0.2831,
+        "within_bound": true
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 8,
+      "n_calibration_total": 27,
+      "note": "floor(alpha*(n+1)) = 0 < 1 with n=8: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "threshold": 0.0,
+      "use_case": "internal_knowledge"
+    },
+    {
+      "achieved_escalation_rate": 1.0,
+      "alpha": 0.1,
+      "beta": 0.04,
+      "beta_constrained_miss_rate": 1.0,
+      "beta_constrained_threshold": 0.0,
+      "category": "toxicity",
+      "coverage": {
+        "alpha": 0.1,
+        "n_test_positives": 0,
+        "note": "no positive test examples; coverage NOT verified",
+        "realised_miss_rate": 0.0,
+        "upper_confidence_limit": 1.0,
+        "within_bound": false
+      },
+      "degenerate": true,
+      "escalation_within_budget": false,
+      "k_index": 0,
+      "n_calibration_positives": 0,
+      "n_calibration_total": 28,
+      "note": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "threshold": 0.0,
+      "use_case": "internal_knowledge"
+    }
+  ],
+  "n_items": 565,
+  "split_seed": 1729,
+  "thresholds": {},
+  "unfitted": [
+    {
+      "category": "bias",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "customer_support"
+    },
+    {
+      "category": "hallucination",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "customer_support"
+    },
+    {
+      "category": "injection",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=1: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "customer_support"
+    },
+    {
+      "category": "privacy",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "customer_support"
+    },
+    {
+      "category": "toxicity",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "customer_support"
+    },
+    {
+      "category": "bias",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "decision_support"
+    },
+    {
+      "category": "hallucination",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=2: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "decision_support"
+    },
+    {
+      "category": "injection",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "decision_support"
+    },
+    {
+      "category": "privacy",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=1: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "decision_support"
+    },
+    {
+      "category": "toxicity",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "decision_support"
+    },
+    {
+      "category": "bias",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "internal_knowledge"
+    },
+    {
+      "category": "hallucination",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=6: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "internal_knowledge"
+    },
+    {
+      "category": "injection",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "internal_knowledge"
+    },
+    {
+      "category": "privacy",
+      "reason": "floor(alpha*(n+1)) = 0 < 1 with n=8: no threshold above 0 can meet alpha=0.1 at this sample size",
+      "use_case": "internal_knowledge"
+    },
+    {
+      "category": "toxicity",
+      "reason": "no positive calibration examples; threshold pinned to 0.0 (flag all)",
+      "use_case": "internal_knowledge"
+    }
+  ]
+}
