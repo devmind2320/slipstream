@@ -3,258 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Slipstream — adaptive verification scheduling</title>
-<style>
-  :root{
-    --bg:#f7f7f5; --panel:#ffffff; --ink:#16161a; --muted:#6b6b76;
-    --line:#e2e2dd; --accent:#1f6feb; --danger:#c0392b; --ok:#1a7f4b;
-    --warn:#b26a00; --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-       font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-  header{padding:22px 26px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
-  h1{margin:0;font-size:19px;letter-spacing:-.01em}
-  .sub{color:var(--muted);font-size:13px;margin-top:5px;max-width:88ch}
-  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
-       padding:12px 26px;border-bottom:1px solid var(--line);background:var(--panel)}
-  select,button{font:inherit;padding:6px 11px;border:1px solid var(--line);
-       border-radius:6px;background:#fff;color:var(--ink);cursor:pointer}
-  button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
-  button:disabled{opacity:.45;cursor:default}
-  .note{color:var(--muted);font-size:12.5px}
-  main{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px 26px}
-  @media (max-width:900px){main{grid-template-columns:1fr}}
-  .pane{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden}
-  .pane h2{margin:0;padding:11px 15px;font-size:13px;letter-spacing:.05em;
-       text-transform:uppercase;border-bottom:1px solid var(--line)}
-  .pane.async h2{color:var(--danger)} .pane.adaptive h2{color:var(--ok)}
-  .meta{display:flex;flex-wrap:wrap;gap:14px;padding:10px 15px;
-       border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
-  .meta b{color:var(--ink);font-weight:600}
-  .counters{display:flex;gap:20px;padding:11px 15px;border-bottom:1px solid var(--line)}
-  .counter .k{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-  .counter .v{font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums}
-  .out{padding:15px;min-height:190px;white-space:pre-wrap;font-size:14.5px}
-  .out .mask{background:#e8f0fe;color:#12305f;border:1px solid #c6d8fb;
-       border-radius:4px;padding:0 4px;font-family:var(--mono);font-size:12.5px}
-  .out .raw{background:#fdecea;color:#7d1d13;border-radius:3px;padding:0 2px}
-  .banner{margin:0 15px 13px;padding:9px 12px;border-radius:6px;font-size:13px;display:none}
-  .banner.leak{background:#fdecea;color:#7d1d13;border:1px solid #f5c6c0;display:block}
-  .banner.safe{background:#e7f5ec;color:#0f5c36;border:1px solid #bfe3ce;display:block}
-  .banner.info{background:#fff6e5;color:#7a4a00;border:1px solid #f2ddb4;display:block}
-  .ledger{padding:0 26px 30px}
-  .ledger h2{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-  .rec{background:var(--panel);border:1px solid var(--line);border-radius:9px;
-       padding:13px 15px;margin-bottom:11px;font-family:var(--mono);font-size:11.5px;
-       overflow-x:auto}
-  .rec .row{display:flex;gap:9px;white-space:nowrap}
-  .rec .lbl{color:var(--muted);min-width:110px}
-  .chain{color:var(--accent)}
-  .pill{display:inline-block;padding:1px 7px;border-radius:20px;font-size:10.5px;
-       border:1px solid var(--line);background:#fafaf8}
-  .pill.high{border-color:#f0b9b3;background:#fdecea;color:#7d1d13}
-  .pill.medium{border-color:#f2ddb4;background:#fff6e5;color:#7a4a00}
-  .pill.low{border-color:#bfe3ce;background:#e7f5ec;color:#0f5c36}
-  footer{padding:0 26px 34px;color:var(--muted);font-size:12.5px;max-width:96ch}
-  code{font-family:var(--mono);font-size:12px;background:#f0f0ec;padding:1px 4px;border-radius:4px}
-</style>
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Slipstream — risk-adaptive streaming verification gateway. Live A/B demo, evaluation results, policy packs and the hash-chained decision ledger.">
+<title>Slipstream</title>
+<link rel="stylesheet" href="/static/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>%E2%97%88</text></svg>">
 </head>
 <body>
-<header>
-  <h1>Slipstream — adaptive verification scheduling</h1>
-  <div class="sub">
-    Both panes run the <strong>same detectors at the same thresholds against the same
-    model</strong>. The only difference is <em>when</em> verification happens relative to
-    token generation. Left streams first and scans behind it; right holds a buffer whose
-    depth the risk estimator chose for this specific request.
+
+<header class="app">
+  <div class="brand">
+    <h1>Slipstream</h1>
+    <div class="sub">
+      Risk-adaptive streaming verification. A prompt-side estimator picks a verification band,
+      the scheduler holds back exactly as much of the stream as that band requires, and
+      verification runs concurrently with token generation instead of in front of it.
+    </div>
+  </div>
+  <div class="header-side">
+    <span class="dot" id="health-dot" aria-hidden="true"></span>
+    <span class="note" id="health-label">connecting…</span>
+    <button id="theme" type="button">Auto</button>
   </div>
 </header>
 
-<div class="bar">
-  <label class="note" for="scenario">Scenario</label>
-  <select id="scenario"></select>
-  <button id="run" class="primary">Run both arms</button>
-  <button id="verify">Verify ledger chain</button>
-  <span id="status" class="note"></span>
-</div>
+<nav class="tabs" aria-label="Dashboard sections"></nav>
 
-<main>
-  <section class="pane async" id="pane-fixed_async">
-    <h2>fixed_async — stream first, scan behind</h2>
-    <div class="meta" id="meta-fixed_async"><span>waiting…</span></div>
-    <div class="counters">
-      <div class="counter"><div class="k">TTFT</div><div class="v" id="ttft-fixed_async">—</div></div>
-      <div class="counter"><div class="k">Added latency</div><div class="v" id="add-fixed_async">—</div></div>
-      <div class="counter"><div class="k">Total</div><div class="v" id="tot-fixed_async">—</div></div>
-    </div>
-    <div class="out" id="out-fixed_async"></div>
-    <div class="banner" id="ban-fixed_async"></div>
-  </section>
+<main class="view" role="main"></main>
 
-  <section class="pane adaptive" id="pane-adaptive">
-    <h2>adaptive — hold back, verify concurrently, then release</h2>
-    <div class="meta" id="meta-adaptive"><span>waiting…</span></div>
-    <div class="counters">
-      <div class="counter"><div class="k">TTFT</div><div class="v" id="ttft-adaptive">—</div></div>
-      <div class="counter"><div class="k">Added latency</div><div class="v" id="add-adaptive">—</div></div>
-      <div class="counter"><div class="k">Total</div><div class="v" id="tot-adaptive">—</div></div>
-    </div>
-    <div class="out" id="out-adaptive"></div>
-    <div class="banner" id="ban-adaptive"></div>
-  </section>
-</main>
-
-<div class="ledger">
-  <h2>Decision records — append-only, hash chained</h2>
-  <div id="records"></div>
-</div>
-
-<footer>
-  Each record's <code>record_hash</code> is <code>sha256(prev_hash + canonical_json(record))</code>,
-  so the <span class="chain">linked hashes</span> below form a tamper-evident chain: altering any
-  record invalidates every hash after it. Records are never updated or deleted — corrections are
-  new records that reference the original. Entity <em>types</em> are recorded; values never are.
+<footer class="app">
+  Offline by default — no API key, no network access, no model downloads on the default path.
+  Entity <em>types</em> are recorded in the ledger; values never are.
 </footer>
 
-<script>
-const ARMS = ["fixed_async", "adaptive"];
-const $ = id => document.getElementById(id);
-let records = [];
+<noscript>
+  <div style="padding:26px">
+    This dashboard needs JavaScript. The same data is available directly from the gateway:
+    <code>/healthz</code>, <code>/results</code>, <code>/policy/packs</code>,
+    <code>/ledger/recent</code> and <code>/ledger/verify</code>.
+  </div>
+</noscript>
 
-function esc(s){ return s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
-
-// Highlight masked placeholders, and highlight raw identifiers that were NOT masked.
-const RAW = /(\b[A-Z]{5}\d{4}[A-Z]\b|\b\d{12}\b|\b[\w.+-]+@[\w-]+\.\w{2,}\b|INR\s[\d,]+|\b9\d{9}\b)/g;
-function renderText(el, text){
-  let html = esc(text)
-    .replace(/\[([A-Z_]{2,})\]/g, '<span class="mask">$1 masked</span>');
-  html = html.replace(RAW, '<span class="raw">$1</span>');
-  el.innerHTML = html;
-}
-
-function pill(band){ return `<span class="pill ${band}">${band}</span>`; }
-
-async function loadScenarios(){
-  const r = await fetch("/demo/scenarios");
-  const data = await r.json();
-  const sel = $("scenario");
-  sel.innerHTML = "";
-  for(const [k,v] of Object.entries(data)){
-    const o = document.createElement("option");
-    o.value = k; o.textContent = v.title;
-    sel.appendChild(o);
-  }
-}
-
-function runArm(arm, scenario){
-  return new Promise(resolve => {
-    const out = $("out-"+arm), ban = $("ban-"+arm), meta = $("meta-"+arm);
-    out.textContent = ""; ban.className = "banner"; ban.textContent = "";
-    meta.innerHTML = "<span>connecting…</span>";
-    $("ttft-"+arm).textContent = "—";
-    $("add-"+arm).textContent = "—";
-    $("tot-"+arm).textContent = "—";
-
-    let buf = "", t0 = performance.now(), ttft = null, replaced = null;
-    const es = new EventSource(`/demo/stream?arm=${arm}&scenario=${scenario}`);
-
-    es.addEventListener("chunk", e => {
-      const d = JSON.parse(e.data);
-      if(ttft === null){ ttft = performance.now() - t0; $("ttft-"+arm).textContent = Math.round(ttft)+" ms"; }
-      buf += d.delta;
-      renderText(out, buf);
-    });
-
-    es.addEventListener("annotation", e => {
-      const d = JSON.parse(e.data);
-      if(d.meta && d.meta.restart){
-        // The retry replaces the response. What was already on screen still
-        // counts as having been shown, so it is preserved and labelled.
-        replaced = buf; buf = "";
-        ban.className = "banner info";
-        ban.textContent = "Regenerated under a grounding constraint after "
-          + Math.round(performance.now()-t0) + " ms. The text above had already been displayed.";
-      } else {
-        ban.className = "banner info"; ban.textContent = d.text;
-      }
-    });
-
-    for(const kind of ["blocked","escalated"]){
-      es.addEventListener(kind, e => {
-        const d = JSON.parse(e.data);
-        ban.className = "banner leak";
-        ban.textContent = (kind === "blocked" ? "BLOCKED — " : "ESCALATED — ")
-          + (d.text || "withheld") + "  ·  " + ((d.meta && d.meta.reasons) || []).join("; ");
-      });
-    }
-
-    es.addEventListener("record", e => {
-      const rec = JSON.parse(e.data);
-      const p = rec.policy;
-      meta.innerHTML = [
-        `band <b>${p.band}</b> ${pill(p.band)}`,
-        `holdback <b>${p.holdback_tokens}</b> tok`,
-        `sync <b>${p.sync}</b>`,
-        `action <b>${rec.action}</b>`,
-        `model <b>${rec.model_used}</b>`,
-        `detectors <b>${p.detectors.join(",")}</b>`
-      ].join("");
-      $("add-"+arm).textContent = Math.round(rec.total_latency_ms) + " ms";
-      $("tot-"+arm).textContent = Math.round(rec.total_latency_ms) + " ms";
-      $("ttft-"+arm).textContent = Math.round(rec.ttft_ms) + " ms";
-
-      if(rec.leaked_chunks > 0){
-        ban.className = "banner leak";
-        ban.textContent = `LEAKED — ${rec.leaked_chunks} chunk(s) reached the screen before `
-          + `their verdict existed. Flagged after the fact.`;
-        if(replaced !== null){ renderText(out, replaced); }
-      } else if(rec.entities_masked && rec.entities_masked.length){
-        ban.className = "banner safe";
-        ban.textContent = "MASKED BEFORE EMISSION — "
-          + rec.entities_masked.join(", ") + " never reached the screen.";
-      }
-      records.push(rec); renderRecords();
-      es.close(); resolve();
-    });
-
-    es.addEventListener("error", () => { es.close(); resolve(); });
-    es.onerror = () => { es.close(); resolve(); };
-  });
-}
-
-function renderRecords(){
-  const el = $("records");
-  el.innerHTML = records.slice(-6).map(r => `
-    <div class="rec">
-      <div class="row"><span class="lbl">record_id</span><span>${r.record_id}</span></div>
-      <div class="row"><span class="lbl">arm / band</span><span>${r.arm} · ${r.policy.band} · action ${r.action}</span></div>
-      <div class="row"><span class="lbl">entities</span><span>${(r.entities_masked||[]).join(", ") || "—"} (types only, never values)</span></div>
-      <div class="row"><span class="lbl">prev_hash</span><span class="chain">${r.prev_hash}</span></div>
-      <div class="row"><span class="lbl">record_hash</span><span class="chain">${r.record_hash}</span></div>
-      <div class="row"><span class="lbl">timings</span><span>ttft ${Math.round(r.ttft_ms)} ms · total ${Math.round(r.total_latency_ms)} ms · guard ${Math.round(r.guard_overhead_ms)} ms</span></div>
-    </div>`).join("");
-}
-
-$("run").onclick = async () => {
-  $("run").disabled = true; $("status").textContent = "running both arms…";
-  const sc = $("scenario").value;
-  // Sequential, not parallel: the two panes share one event loop and one CPU,
-  // and racing them would make the latency counters measure contention.
-  for(const arm of ARMS){ await runArm(arm, sc); }
-  $("status").textContent = "done";
-  $("run").disabled = false;
-};
-
-$("verify").onclick = async () => {
-  const r = await fetch("/ledger/verify");
-  const d = await r.json();
-  $("status").textContent = d.ok
-    ? `ledger ok — ${d.records} record(s), hash chain intact`
-    : `CHAIN BREAK at seq ${d.first_break.seq} (${d.first_break.kind})`;
-};
-
-loadScenarios().then(() => { $("status").textContent = "ready — offline, no API key"; });
-</script>
+<script type="module" src="/static/app.js"></script>
 </body>
 </html>

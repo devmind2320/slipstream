@@ -31,6 +31,8 @@ Submit bug reports and feature suggestions, or track changes, in the
 - Requirements
 - Recommended backends
 - Installation
+    - Running the dashboard
+    - Deploying with Docker
 - Configuration
 - How it works
 - Key features
@@ -122,6 +124,59 @@ targets are:
 
 To confirm the installation, run `make info`. It prints the active backends and
 the detector-registry fingerprint without touching the network.
+
+
+### Running the dashboard
+
+```bash
+make serve          # http://127.0.0.1:8000/
+```
+
+The dashboard is served by the gateway itself and has five views, each reading
+the live process rather than a fixture:
+
+- **Live demo** — the A/B comparison. The same request through `fixed_async` and
+  `adaptive` side by side, streamed over server-sent events, with masked
+  placeholders and un-masked identifiers highlighted differently so a leak is
+  visible rather than something you have to spot.
+- **Results** — the three-arm evaluation table read from `results.json`, plus
+  the guard-versus-generation race by band, conformal calibration status
+  including any coverage failure, the entity-gated cache probe, and full run
+  provenance.
+- **Policy** — every loaded pack, its bands, its floor detectors and its
+  per-geography PII entity sets. Packs are hot-reloaded, so an edit shows up on
+  reload without restarting the gateway.
+- **Ledger** — recent decision records with their place in the hash chain, and a
+  button that walks the chain server-side and reports the first break.
+- **System** — the live provider, the active backends, the detector registry and
+  its fingerprint, and the endpoint map.
+
+There is no build step and no external request: the page loads ES modules and a
+stylesheet from the gateway and nothing else, which is what keeps INV-5 true for
+the UI as well as the runtime. To add a view, add a module under
+`slipstream/dashboard/static/views/` and one entry to `ROUTES` in `app.js`.
+
+
+### Deploying with Docker
+
+```bash
+docker build -t slipstream .
+docker run --rm -p 8000:8000 slipstream
+```
+
+The image installs `requirements.txt` only, bakes in no model weights and
+fetches none at runtime, so a container satisfies the offline guarantee exactly
+as a clean clone does. It runs as a non-root user and carries a healthcheck
+against `/healthz`.
+
+The ledger is written under `SLIPSTREAM_DATA_DIR`, which defaults to `/app/data`
+in the image. Mount a volume there to keep the hash chain across restarts —
+without one the chain starts fresh on every run, which is fine for a demo and
+wrong for an audit:
+
+```bash
+docker run --rm -p 8000:8000 -v slipstream-data:/app/data slipstream
+```
 
 
 ## Configuration
@@ -306,7 +361,7 @@ gives the same thing in a browser over server-sent events.
 | Hash-chained ledger | [ledger/store.py](slipstream/ledger/store.py) | Append-only enforced by SQLite triggers, not convention |
 | Three-arm harness | [eval/harness.py](slipstream/eval/harness.py) | Score, fit, run, probe, report |
 | Corpus generator | [eval/datasets/generate.py](slipstream/eval/datasets/generate.py) | Committed; the corpus itself is not |
-| Dashboard | [dashboard/index.html](slipstream/dashboard/index.html) | One file, vanilla JS, server-sent events, no build step |
+| Dashboard | [dashboard/](slipstream/dashboard/) | Five views over the live gateway. ES modules, vanilla JS, no build step |
 
 
 ## Results
@@ -540,8 +595,9 @@ slipstream/
   feedback/   capture.py
   eval/       harness.py · metrics.py · report.py · datasets/generate.py · results/
   demo/       scenario.py · run.py
-  dashboard/  index.html
+  dashboard/  index.html · static/{styles.css,app.js,api.js,util.js,views/}
 tests/                    139 tests
+Dockerfile                container image for the gateway and dashboard
 ASSUMPTIONS.md            every parameter we chose, and what changes if it is wrong
 ```
 

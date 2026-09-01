@@ -1,0 +1,32 @@
+# Keep the build context small and the image reproducible. Generated data is
+# rebuilt from the committed generator, never copied in.
+.git/
+.gitignore
+data/
+slipstream/eval/datasets/fixtures/generated.jsonl
+slipstream/eval/results/items.jsonl
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+*.egg-info/
+build/
+dist/
+tests/
+Makefile
+make.ps1
+pytest.ini
+requirements-optional.txt
+Dockerfile
+.dockerignore
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

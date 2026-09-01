@@ -1,0 +1,291 @@
+/* Slipstream dashboard — design tokens and components.
+ *
+ * No build step and no external requests: this file is served as-is by the
+ * gateway, which keeps INV-5 (offline on a clean clone) true for the UI too.
+ * Every colour is a token defined once here; views never hard-code one.
+ */
+
+/* ---------------------------------------------------------------- tokens */
+:root {
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --panel-alt: #fafaf8;
+  --ink: #16161a;
+  --muted: #6b6b76;
+  --line: #e2e2dd;
+  --line-soft: #eeeeea;
+
+  --accent: #1f6feb;
+  --accent-soft: #e8f0fe;
+  --accent-line: #c6d8fb;
+  --danger: #c0392b;
+  --danger-soft: #fdecea;
+  --danger-line: #f5c6c0;
+  --ok: #1a7f4b;
+  --ok-soft: #e7f5ec;
+  --ok-line: #bfe3ce;
+  --warn: #b26a00;
+  --warn-soft: #fff6e5;
+  --warn-line: #f2ddb4;
+
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius: 9px;
+  --radius-sm: 6px;
+  --pad: 16px;
+  --gutter: 26px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131316;
+    --panel: #1b1b1f;
+    --panel-alt: #212127;
+    --ink: #ececf0;
+    --muted: #9a9aa6;
+    --line: #2e2e36;
+    --line-soft: #26262c;
+
+    --accent: #6ea8fe;
+    --accent-soft: #17263f;
+    --accent-line: #2d4a7a;
+    --danger: #f08b7f;
+    --danger-soft: #3a1d19;
+    --danger-line: #5e2b23;
+    --ok: #6cc79a;
+    --ok-soft: #16301f;
+    --ok-line: #274c37;
+    --warn: #e0b264;
+    --warn-soft: #33260f;
+    --warn-line: #55411c;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #131316;
+  --panel: #1b1b1f;
+  --panel-alt: #212127;
+  --ink: #ececf0;
+  --muted: #9a9aa6;
+  --line: #2e2e36;
+  --line-soft: #26262c;
+
+  --accent: #6ea8fe;
+  --accent-soft: #17263f;
+  --accent-line: #2d4a7a;
+  --danger: #f08b7f;
+  --danger-soft: #3a1d19;
+  --danger-line: #5e2b23;
+  --ok: #6cc79a;
+  --ok-soft: #16301f;
+  --ok-line: #274c37;
+  --warn: #e0b264;
+  --warn-soft: #33260f;
+  --warn-line: #55411c;
+}
+
+/* ------------------------------------------------------------ structure */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+header.app {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 18px var(--gutter) 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand { flex: 1; min-width: 0; }
+.brand h1 { margin: 0; font-size: 18px; letter-spacing: -0.01em; }
+.brand .sub { color: var(--muted); font-size: 12.5px; margin-top: 4px; max-width: 96ch; }
+
+.header-side { display: flex; align-items: center; gap: 10px; padding-top: 2px; }
+
+/* Health dot in the header — the one always-visible signal that the
+ * gateway is reachable. Colour is set by the shell, not by a view. */
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.dot.ok { background: var(--ok); }
+.dot.down { background: var(--danger); }
+
+nav.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 14px var(--gutter) 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+nav.tabs::-webkit-scrollbar { display: none; }
+
+nav.tabs a {
+  padding: 8px 14px 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+nav.tabs a:hover { color: var(--ink); }
+nav.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 550; }
+
+main.view { padding: var(--pad) var(--gutter) 40px; }
+
+/* --------------------------------------------------------------- toolbar */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--pad);
+}
+
+select, button, input {
+  font: inherit;
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--ink);
+}
+select, button { cursor: pointer; }
+button:hover:not(:disabled) { border-color: var(--muted); }
+button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+button:disabled { opacity: 0.45; cursor: default; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.note { color: var(--muted); font-size: 12.5px; }
+.spacer { flex: 1; }
+
+/* ----------------------------------------------------------------- cards */
+.grid { display: grid; gap: var(--pad); }
+.grid.two { grid-template-columns: 1fr 1fr; }
+.grid.three { grid-template-columns: repeat(3, 1fr); }
+.grid.auto { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+@media (max-width: 900px) {
+  .grid.two, .grid.three { grid-template-columns: 1fr; }
+  :root { --gutter: 14px; }
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.card > h2 {
+  margin: 0;
+  padding: 11px 15px;
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card > .body { padding: 15px; }
+.card.async > h2 { color: var(--danger); }
+.card.adaptive > h2 { color: var(--ok); }
+
+/* -------------------------------------------------------------- counters */
+.counters { display: flex; gap: 22px; padding: 11px 15px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.counter .k { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.counter .v { font-family: var(--mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.counter .v.pending { color: var(--muted); }
+
+/* Stat tiles used by the results view. */
+.stat { padding: 13px 15px; }
+.stat .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.stat .v { font-family: var(--mono); font-size: 24px; font-variant-numeric: tabular-nums; margin-top: 3px; }
+.stat .cmp { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.stat .v.good { color: var(--ok); }
+.stat .v.bad { color: var(--danger); }
+
+/* ----------------------------------------------------------- stream pane */
+.meta {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  padding: 10px 15px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+}
+.meta b { color: var(--ink); font-weight: 600; }
+
+.out { padding: 15px; min-height: 190px; white-space: pre-wrap; font-size: 14.5px; word-break: break-word; }
+.out .mask {
+  background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-line);
+  border-radius: 4px; padding: 0 4px; font-family: var(--mono); font-size: 12.5px;
+}
+.out .raw { background: var(--danger-soft); color: var(--danger); border-radius: 3px; padding: 0 2px; }
+.out .caret { animation: blink 1s steps(2) infinite; color: var(--muted); }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .out .caret { animation: none; } }
+
+.banner { margin: 0 15px 13px; padding: 9px 12px; border-radius: var(--radius-sm); font-size: 13px; }
+.banner.leak { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-line); }
+.banner.safe { background: var(--ok-soft); color: var(--ok); border: 1px solid var(--ok-line); }
+.banner.info { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-line); }
+
+/* ---------------------------------------------------------------- tables */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: var(--panel-alt); }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
+td.win { font-weight: 650; color: var(--ok); }
+td.lose { color: var(--danger); }
+th.metric, td.metric { white-space: normal; min-width: 200px; }
+
+/* ------------------------------------------------------------ key/values */
+.kv { display: grid; grid-template-columns: minmax(120px, max-content) 1fr; gap: 6px 14px; font-size: 13px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-family: var(--mono); font-size: 12px; word-break: break-all; }
+
+/* ----------------------------------------------------------------- pills */
+.pill {
+  display: inline-block; padding: 1px 8px; border-radius: 20px; font-size: 10.5px;
+  border: 1px solid var(--line); background: var(--panel-alt); color: var(--muted);
+  font-family: var(--sans); letter-spacing: 0.02em;
+}
+.pill.high { border-color: var(--danger-line); background: var(--danger-soft); color: var(--danger); }
+.pill.medium { border-color: var(--warn-line); background: var(--warn-soft); color: var(--warn); }
+.pill.low { border-color: var(--ok-line); background: var(--ok-soft); color: var(--ok); }
+.pill.ok { border-color: var(--ok-line); background: var(--ok-soft); color: var(--ok); }
+.pill.bad { border-color: var(--danger-line); background: var(--danger-soft); color: var(--danger); }
+.pill.on { border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent); }
+
+/* ---------------------------------------------------------------- ledger */
+.rec {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 10px; background: var(--panel);
+  font-family: var(--mono); font-size: 11.5px; overflow-x: auto;
+}
+.rec .row { display: flex; gap: 10px; white-space: nowrap; padding: 1px 0; }
+.rec .lbl { color: var(--muted); min-width: 108px; flex: none; }
+.chain { color: var(--accent); }
+
+/* ------------------------------------------------------------ misc state */
+.empty, .error {
+  padding: 26px 15px; text-align: center; color: var(--muted); font-size: 13.5px;
+}
+.error { color: var(--danger); }
+.empty code, .error code, code {
+  font-family: var(--mono); font-size: 12px; background: var(--panel-alt);
+  border: 1px solid var(--line-soft); padding: 1px 5px; border-radius: 4px;
+}
+.loading { padding: 26px 15px; text-align: center; color: var(--muted); font-size: 13.5px; }
+
+footer.app { padding: 0 var(--gutter) 34px; color: var(--muted); font-size: 12.5px; max-width: 100ch; }
+.prose { max-width: 96ch; color: var(--muted); font-size: 13px; margin: 0 0 var(--pad); }
+.prose strong { color: var(--ink); }

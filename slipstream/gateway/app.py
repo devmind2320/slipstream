@@ -5,9 +5,13 @@
 Endpoints:
   POST /v1/chat/completions   OpenAI-shaped, SSE when stream=true
   GET  /demo/stream           the A/B demo feed used by the dashboard (§11)
+  GET  /demo/scenarios        scenarios the dashboard offers
+  GET  /policy/packs          loaded policy packs
   GET  /ledger/recent         recent decision records, hash chain visible
   GET  /ledger/verify         walk the chain, report the first break
+  GET  /results               eval results, once `make eval` has run
   GET  /healthz
+  GET  /                      dashboard shell; assets under /static
 
 Offline by default: the replay provider is the default and no key is read
 anywhere on the demo path (INV-5).
@@ -22,6 +26,7 @@ from typing import Any, AsyncIterator
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from .. import settings
@@ -70,6 +75,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Slipstream", version="0.1.0", lifespan=lifespan)
+
+DASHBOARD_DIR = settings.PKG_ROOT / "dashboard"
+app.mount(
+    "/static",
+    StaticFiles(directory=DASHBOARD_DIR / "static"),
+    name="static",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -263,5 +275,10 @@ async def healthz():
 
 @app.get("/", response_class=HTMLResponse)
 async def dashboard():
-    path = settings.PKG_ROOT / "dashboard" / "index.html"
-    return HTMLResponse(path.read_text(encoding="utf-8"))
+    path = DASHBOARD_DIR / "index.html"
+    # no-store: the shell is tiny and a stale one during a live demo is worse
+    # than re-reading it. Assets under /static carry their own cache headers.
+    return HTMLResponse(
+        path.read_text(encoding="utf-8"),
+        headers={"Cache-Control": "no-store"},
+    )
