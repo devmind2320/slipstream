@@ -17,15 +17,6 @@ per-request decision. Against a fixed-synchronous baseline it closes 64% of the
 time-to-first-token gap while holding that baseline's PII interception rate and
 groundedness recall exactly.
 
-Built for the Accenture Innovation Challenge 2026, Round 2, PS1 ControlPlane.ai.
-
-For the full source, see the
-[project repository](https://github.com/YOUR-USERNAME/slipstream).
-
-Submit bug reports and feature suggestions, or track changes, in the
-[issue tracker](https://github.com/YOUR-USERNAME/slipstream/issues).
-
-
 ## Table of contents
 
 - Requirements
