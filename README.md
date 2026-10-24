@@ -17,27 +17,6 @@ per-request decision. Against a fixed-synchronous baseline it closes 64% of the
 time-to-first-token gap while holding that baseline's PII interception rate and
 groundedness recall exactly.
 
-## Table of contents
-
-- Requirements
-- Recommended backends
-- Installation
-    - Running the dashboard
-    - Deploying with Docker
-- Configuration
-- How it works
-- Key features
-- Results
-- Design decisions
-- Governance and audit
-- Tests
-- Limitations
-- Repository layout
-- Troubleshooting
-- FAQ
-- Maintainers
-
-
 ## Requirements
 
 Slipstream runs offline on a clean clone. There is no API key, no network
